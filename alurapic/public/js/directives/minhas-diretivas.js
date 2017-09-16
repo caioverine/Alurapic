@@ -6,7 +6,6 @@ angular.module('minhasDiretivas', [])
 		ddo.restrict = "AE";
         ddo.transclude = true;
 
-
 		ddo.scope = {
             titulo: '@'
         };
