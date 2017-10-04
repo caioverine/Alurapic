@@ -1,17 +1,16 @@
-angular.module('alurapic').controller('FotoController', function($scope, $http, $routeParams){
+angular.module('alurapic').controller('FotoController', function($scope, recursoFoto, $routeParams){
 
   $scope.foto = {};
   $scope.mensagem = "";
 
   if($routeParams.fotoId){
-    $http.get('v1/fotos/'+$routeParams.fotoId).success(function(foto){
+    recursoFoto.get({fotoId : $routeParams.fotoId}, function(foto){
 
       $scope.foto = foto;
-    })
-    .error(function(erro){
+    }, function(erro){
 
       console.log(erro);
-      $scope.mensagem = "não foi possivel carregar foto";
+      $scope.mensagem = "não foi possivel recuperar foto";
     })
   }
 
@@ -21,23 +20,22 @@ angular.module('alurapic').controller('FotoController', function($scope, $http, 
 
       if($scope.foto._id){
 
-        $http.put('v1/fotos/'+$scope.foto._id, $scope.foto).success(function(){
+        recursoFoto.update({fotoId : $scope.foto._id}, $scope.foto, function(){
 
           $scope.mensagem = "foto alterada com sucesso";
-        })
-        .error(function(erro){
+        }, function(erro){
 
           $scope.mensagem = "não foi possivel alterar a foto";
           console.log(erro);
         });
+
       }else{
 
-        $http.post('v1/fotos', $scope.foto).success(function(){
+        recursoFoto.save($scope.foto, function() {
 
           $scope.foto = {};
           $scope.mensagem = "foto cadastrada com sucesso";
-        })
-        .error(function(erro){
+        }, function(erro){
 
           $scope.mensagem = "foto não cadastrada";
           console.log(erro);
